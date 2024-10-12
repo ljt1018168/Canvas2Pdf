@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>结业证书</title>
+    <link rel="stylesheet" href="css/layui.css">
+    <link rel="stylesheet" href="css/profession-base.css">
+    <link rel="stylesheet" href="css/user-common.css">
+    <link rel="stylesheet" href="css/certificate.css">
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/html2canvas.js"></script>
+    <script src="js/jspdf.min.js"></script>
+    <script>
+        $(function(){
+            $('.close_btn').click(function(){
+                $(".certificate_mask").hide();
+                $(".certificate_popup").hide();
+            })
+            $(".certificate_tabCon .ckzs_btn").click(function(){
+                $(".certificate_mask").show();
+                $(".certificate_popup").show();
+            })
+
+            $('.certificate_title li').click(function(){
+                $(this).addClass('active').siblings().removeClass('active');
+                $(".certificate_tabCon .details").eq($(this).index()).removeClass('hide').siblings().addClass('hide');
+            })
+
+            // 下载证书
+            function htmlToPdf() {
+                // 获取HTML元素
+                const element = document.getElementById("capture");
+                const options = {
+                    dpi: 300,  //dpi属性的值为300，表示图像的分辨率
+                    scale: 2, //scale属性的值为2，表示图像的缩放比例。
+                    backgroundColor: "#F1F6FE"  //backgroundColor属性的值为"#F1F6FE"，表示图像的背景颜色。
+                };
+                // 将元素转换为canvas对象
+                html2canvas(element, options).then((canvas) => {
+                    var contentWidth = canvas.width;   //获取Canvas(上面元素id 'capture')对象的宽度
+                    var contentHeight = canvas.height; //获取Canvas(上面元素id 'capture')对象的高度
+                    const pdf = new jsPDF('1', 'pt', [contentWidth, contentHeight]); //创建一个新的PDF对象，参数包括页面格式（'1'表示A4纸张）、单位（'pt'）和页面尺寸（[contentWidth, contentHeight]）
+                    
+                    var pageData = canvas.toDataURL('image/jpeg', 1.0);  //将Canvas对象转换为JPEG格式的数据，并将其存储在pageData变量中。1.0表示图片质量
+                    pdf.addImage(pageData, 'JPEG', 0, 0, contentWidth, contentHeight);  //将JPEG格式的图片添加到PDF文件中，图片的左上角坐标为(0, 0)，宽度为contentWidth，高度为contentHeight
+                    pdf.save("test.pdf");
+                });
+            }
+            $('.download_btn').click(function() {
+                htmlToPdf();
+            });
+        })
+    </script>
+</head>
+<body>
+    <!-- 证书弹窗 -->
+    <div class="certificate_mask"></div>
+    <div class="certificate_popup">
+        <div class="close_btn"></div>
+        <a href="javascript:;" class="download_btn"><img src="images/certificate_download_icon.png"><span>下载证书</span></a>
+        <div class="popup_wrap" id="capture">
+            <img src="images/certificate_bg.png" class="certificate_popup_bg">
+            <div class="certificate_info">
+                <h3>结业证书</h3>
+                <div class="line"><img src="images/certificate_title_bg.png"></div>
+                <h4><span>张三</span>同学：</h4>
+                <p class="pb16">于<span>2024 年 4 月 1 日</span>至<span>2024 年 4 月 15 日</span>在<span>2024届毕业生创客训练营</span>中完成学习，修完全部课程，共计<span> 40 </span>学时，考核成绩合格，准予结业。</p>
+                <p>特发此证</p>
+                <p>证书编号：<em>QJNU456123456789</em></p>
+                <div class="bfjg">
+                    <div class="left">
+                        <div class="name">曲靖师范学院</div>
+                        <div class="data">2024年4月20日</div>
+                    </div>
+                    <div class="right">
+                        <div class="name">万学教育集团</div>
+                        <div class="data">2024年4月20日</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="profession-center">
+        <div class="container">
+            <div class="wrap1200 container-wrap">
+                <!-- 侧边导航增加我的证书栏目 -->
+                <div class="userCenter-left">
+                    <div class="uc-info-t">
+                        <div class="uc-info-avator" onclick="showAlertUserElement('.mask,.avator-upload')">
+                            <img src="https://wx-ols.oss-cn-beijing.aliyuncs.com/oss/file/user/default-header/web_header_6.png" alt="">
+                            <div class="avator-hover">
+                                <p>设置头像</p>
+                            </div>
+                        </div>
+                        <p class="name" id="user-center-username">花花0</p>
+                        <p class="btc" id="checkPackage" zgclickable="true" zghook="1">查看版本套餐</p>
+                    </div>
+                    <div class="sidenav">
+                        <ul>
+                            <li class="uc-study" load-url="/profession/user/my/study" zgclickable="true" zghook="1">
+                                <p>我的学习</p>
+                            </li>
+                            <li class="uc-post" load-url="/profession/user/my/posts-reply/type/1" zgclickable="true" zghook="1">
+                                <p>我的发帖</p>
+                            </li>
+                            <li class="uc-reply" load-url="/profession/user/my/posts-reply/type/2" zgclickable="true" zghook="1">
+                                <p>我的回复</p>
+                            </li>
+                            <li class="uc-order" load-url="/profession/user/my/order" zgclickable="true" zghook="1">
+                                <p>我的订单</p>
+                            </li>
+                            <li class="uc-job" load-url="/profession/user/job/manage" zgclickable="true" zghook="1">
+                                <p>求职管理</p>
+                            </li>
+                            <li class="uc-energy" load-url="/profession/user/my/energy" zgclickable="true" zghook="1">
+                                <p>我的能量</p>
+                            </li>
+                            <li class="uc-fav" load-url="/profession/user/my/collection" zgclickable="true" zghook="1">
+                                <p>我的收藏</p>
+                            </li>
+
+                            <!-- 新增我的证书栏目 start -->
+                            <li class="uc-certificate cur">
+                                <p>我的证书</p>
+                            </li>
+                            <!-- end -->
+
+                            <li class="uc-setting" load-url="/profession/user/account/setting" zgclickable="true" zghook="1">
+                                <p>账号设置</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 侧边导航结束 -->
+                
+                <div class="right-con" id="course-right-con">
+                    <div class="certificate_content">
+                        <ul class="certificate_title">
+                            <li class="active"><p>结业证书</p><span></span></li>
+                            <li><p>学时证明</p><span></span></li>
+                            <li><p>其他证书类型</p><span></span></li>
+                        </ul>
+                        <div class="certificate_tabCon">
+                            <div class="details">
+                                <div class="global_emptypage">
+                                    <img src="images/empty_img.png">
+                                    <p>你还没有获取证书</p>
+                                </div>
+
+                                <table border="0" cellspacing="0" cellpadding="0" width="880">
+                                    <colgroup>
+                                        <col width="680">
+                                        <col width="200">
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th>证书名称</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><h3>2024届毕业生创客训练营</h3></td>
+                                            <td><a class="ckzs_btn" href="javascript:;">查看证书</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><h3>2024届毕业生创客训练营</h3></td>
+                                            <td><a class="ckzs_btn" href="javascript:;">查看证书</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><h3>2024届毕业生创客训练营</h3></td>
+                                            <td><a class="ckzs_btn" href="javascript:;">查看证书</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><h3>2024届毕业生创客训练营</h3></td>
+                                            <td><a class="ckzs_btn" href="javascript:;">查看证书</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><h3>2024届毕业生创客训练营</h3></td>
+                                            <td><a class="ckzs_btn" href="javascript:;">查看证书</a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="details hide">
+                                <div class="global_emptypage">
+                                    <img src="images/empty_img.png">
+                                    <p>暂无内容</p>
+                                </div>
+                            </div>
+                            <div class="details hide">
+                                <div class="global_emptypage">
+                                    <img src="images/empty_img.png">
+                                    <p>暂无内容</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    
+    
+</body>
+</html>
